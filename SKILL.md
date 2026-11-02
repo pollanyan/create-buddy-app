@@ -13,7 +13,7 @@ examples_en:
   - "Create a task dispatch board Buddy app for me"
   - "Publish this MCP to the connector marketplace"
   - "What fields do I need to prepare for a skill release"
-version: 1.0.0
+version: 1.0.1
 author: "WorkBuddy 开放平台实战手册"
 agent_created: true
 ---
