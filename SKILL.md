@@ -124,3 +124,8 @@ bash ~/.workbuddy/skills/open-platform-publisher/scripts/publish.sh status
 | `references/desktop-plugin.md` | 桌面端插件挂载 5 道门、Agent Plugin 严格解析、MCP App 面板技术要点 |
 | `references/lessons.md` | 方法论层面的经验与教训（怎么少走弯路） |
 | `assets/application.template.json` | Buddy 应用配置清单模板（可直接填写） |
+
+## 来源与更新
+
+本技能由一次真实上架实战沉淀，源码仓库：<https://github.com/pollanyan/create-buddy-app>（MIT 协议）。
+平台规则会变 —— 发现文档与本文冲突时，以开放平台实际行为为准，并顺手更新本技能。
