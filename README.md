@@ -38,23 +38,66 @@ create-buddy-app/
 
 ## 安装
 
-**方式一：直接拷贝（本地）**
+### 方式一 · `npx skills add`（推荐，一条命令）
+
+```bash
+npx skills add pollanyan/create-buddy-app --skill create-buddy-app -g -y; \
+mkdir -p ~/.workbuddy/skills && \
+cp -R ~/.agents/skills/create-buddy-app ~/.workbuddy/skills/
+```
+
+用 [skills CLI](https://github.com/vercel-labs/skills)（开放 Agent 技能生态）安装。
+需要 **Node.js ≥ 22.20**，在普通终端里跑（它会渲染一个交互式选择界面）。
+
+**后面为什么还要两步**：`skills` CLI 装到的是通用全局目录 `~/.agents/skills/create-buddy-app/`
+（并写 `~/.agents/.skill-lock.json` 便于后续 `npx skills update` 升级），
+而 **WorkBuddy 只读 `~/.workbuddy/skills/`** —— CLI 目前还没有 `workbuddy` 这个 agent 目标，
+所以要手动挪到位。
+
+> ⚠️ 这里用 `;` 而不是 `&&`：CLI 在全局模式下可能以非 0 退出
+> （个别 agent 不支持全局安装时会报 `does not support global skill installation`），
+> **但技能其实已经装好了**。用 `&&` 会导致后面的复制不执行。
+
+CLI 常用参数：
+
+| 参数 | 作用 |
+|---|---|
+| `-g, --global` | 装到全局（默认装到当前项目） |
+| `-s, --skill <name>` | 只装指定技能（本仓库只有一个技能时可省略） |
+| `-a, --agent <agents>` | 指定装到哪些 agent，`*` 表示全部 |
+| `--copy` | 复制文件而不是建软链 |
+| `-l, --list` | 只列出仓库里可装的技能，不安装 |
+| `-y, --yes` | 跳过交互确认 |
+
+`<package>` 除了 `owner/repo`，也接受**技能名**或**任意技能页 URL**
+（如 `https://github.com/vercel-labs/agent-skills`）。
+
+装好之后：
+
+```bash
+npx skills list              # 看已装技能
+npx skills update            # 按 lock 文件升级
+```
+
+### 方式二 · 直接 clone（零依赖）
 
 ```bash
 git clone https://github.com/pollanyan/create-buddy-app.git \
   ~/.workbuddy/skills/create-buddy-app
 ```
 
-**方式二：下载 zip 后拷贝**
+### 方式三 · 下载 zip
 
 从 [Releases](https://github.com/pollanyan/create-buddy-app/releases) 下载
 `create-buddy-app.zip`，解压后把 `create-buddy-app/` 整个目录放进 `~/.workbuddy/skills/`。
 
-> 装到 `~/.workbuddy/skills/` 后，WorkBuddy 会在下次启动时扫描到它。
-> 想让它显示中文名「创建Buddy应用」，在技能目录下放一个 `_skillhub_meta.json`：
-> ```json
-> { "name": "创建Buddy应用", "source": "local", "version": "1.0.0" }
-> ```
+> **三种方式都适用的两点**
+>
+> 1. 装到 `~/.workbuddy/skills/` 后，WorkBuddy 会在**下次启动**时扫描到它。
+> 2. 想让它在「已安装技能」里显示中文名「创建Buddy应用」，在技能目录下放一个 `_skillhub_meta.json`：
+>    ```json
+>    { "name": "创建Buddy应用", "source": "local", "version": "1.0.0" }
+>    ```
 
 ## 使用
 
