@@ -105,8 +105,63 @@ python3 ~/.workbuddy/skills/wb-open-builder/scripts/validate_asset.py --type con
 | 解析失败 + 提到 URL 变量未声明 | `token-schema.json` 不在包根 / 没进 zip |
 | 解析失败 + 提到 examples | 技能示例超过 3 条 |
 | 解析失败但看不出哪行 | frontmatter 里有 ASCII 冒号+空格 |
+| 解析失败 + "包内版本号必须大于当前最新版本" | 撤回后重传要**递增版本号** |
 | 类目下拉点不动 | 用了 JS `.click()`，改真实鼠标事件 |
 | 填了市场展示分类但摘要没变 | 点到了 chip 而不是列表项；或平台自动改了值，要回读确认 |
 | 表单输入框改不动 | 字段是 `readOnly`，元信息只能靠重新传包 |
+| **点了「继续」「提交」但页面没反应** | **按文字匹配的坐标点空了** —— 必须取**按钮元素本身**的坐标再派发指针事件 |
 | 提交后页面仍显示表单 | 后端返回了错误（主体策略/必填项），读页面上的红字 |
+| 资产卡在「草稿」且介绍变空 | 提交没生效 + 重新进入草稿**不会重新解析包** → 撤回后重传 |
 | 个人主体发连接器被拒 | 主体策略，需要企业/组织主体 |
+
+---
+
+## G. 提交时最容易翻车的三个点（实测踩过）
+
+### G1 · 按钮要按**元素本身**的坐标点
+
+按文字匹配取坐标，很容易命中同名文本节点或已滚走的元素，**点击落空且毫无报错**——
+表现就是「脚本说点过了，页面却没动」。可靠做法：
+
+```js
+// 直接定位 button 元素 → 取它的矩形中心 → 派发真实指针事件
+var btn = Array.from(document.querySelectorAll('button'))
+  .filter(b => b.innerText.trim() === '继续' && b.getClientRects().length)[0];
+btn.scrollIntoView({block:'center'});
+var r = btn.getBoundingClientRect();
+var x = Math.round(r.left + r.width/2), y = Math.round(r.top + r.height/2);
+// 然后 Input.dispatchMouseEvent: mouseMoved → mousePressed → mouseReleased
+```
+
+**每次点完都要回读状态**（URL / 摘要文案 / 卡片状态），确认真的生效了。
+
+### G2 · 中途离开页面 = 草稿字段丢失
+
+草稿资产重新进入发布页时，平台**不会重新解析包**，而是读草稿里存的那份表单状态。
+如果第一次提交没生效、之后又重新进页面，「能力介绍」等从包解析出来的字段就会变成空。
+
+**对策**：整个流程**一口气走完**（上传 → 填下拉 → 继续 → 提交），
+提交失败就**当场撤回重传**，不要靠"再进一次页面看看"。
+
+### G3 · 撤回后重传必须递增版本号
+
+```
+解析失败：包内版本号 "1.0.1" 必须大于当前最新版本 "1.0.1"
+请将 SKILL.md 中的 version 递增后重新打包上传
+```
+
+撤回不会删掉旧版本记录，重传时版本号必须**严格大于**当前最新版本。
+
+---
+
+## H. 开放平台接口速查（抓包得到的）
+
+| 接口 | 方法 | 说明 |
+|---|---|---|
+| `/api/v2/open-platform/capabilities/list` | POST | 资产列表。**body 不能为空**，否则报 `100003 当前用户无权访问该主体`；正确格式：`{"page":1,"pageSize":20,"filters":[{"name":"capability_type","values":["skill"]}]}` |
+| `/api/v2/open-platform/capabilities/submit` | POST | 提交审核 |
+| `/api/v2/open-platform/capabilities/submit-quota` | GET | 提审配额（列表页顶部会显示「本月 合计提审 N/20」「专家提审 N/5」） |
+| `/api/v2/open-platform/capabilities/init-upload` / `complete-upload` | POST | 上传包的两步 |
+
+**没有单个资产的 detail 接口** —— 想核对某个字段，只能回到发布页看它有没有显示。
+
