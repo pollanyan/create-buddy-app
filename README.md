@@ -1,6 +1,7 @@
-# 创建Buddy应用
+# 应用创建与上架
 
 > 在 WorkBuddy 开放平台把能力封装成可上架资产的完整作业手册。
+> 市场展示名称曾用「创建Buddy应用」，因平台品牌词规则调整为现名；技能标识 `create-buddy-app` 与仓库名保持不变。
 > 全部内容来自一次真实上架（任务派工台：连接器 + 技能 + 本地插件）的实测，不是文档摘抄。
 
 **An operating playbook for building and publishing Buddy apps, connectors, skills and experts on the WorkBuddy open platform — subject gates, the five-module app checklist, platform pitfalls, desktop plugin mounting rules, and the CDP publishing workflow.**

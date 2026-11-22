@@ -1,10 +1,10 @@
 ---
 name: create-buddy-app
-description: "在 WorkBuddy 开放平台（open.workbuddy.cn）开发并上架 Buddy 应用、连接器、技能、专家的操作手册。当用户说「创建Buddy应用」「做个应用放进发现应用」「发布连接器到市场」「上架技能」「让本地 MCP 出现在连接器列表」时使用。内含主体门槛判定、Buddy 应用五模块配置清单、平台实测踩坑清单、桌面端本地插件挂载门禁，以及已验证可用的 CDP 发布脚本用法。"
+description: "在 WorkBuddy 开放平台（open.workbuddy.cn）开发并上架 Buddy 应用、连接器、技能、专家的操作手册。当用户说「应用创建与上架」「创建一个应用」「做个应用放进发现应用」「发布连接器到市场」「上架技能」「让本地 MCP 出现在连接器列表」时使用。内含主体门槛判定、Buddy 应用五模块配置清单、平台实测踩坑清单、桌面端本地插件挂载门禁，以及已验证可用的 CDP 发布脚本用法。"
 description_zh: "在 WorkBuddy 开放平台开发并上架 Buddy 应用、连接器、技能、专家资产的操作手册：主体门槛判定、五模块配置清单、平台实测坑、桌面端插件挂载门禁、CDP 发布脚本用法。"
 description_en: "An operating playbook for building and publishing Buddy apps, connectors, skills and experts on the WorkBuddy open platform — subject gates, the five-module app checklist, platform pitfalls, desktop plugin mounting rules, and the CDP publishing workflow."
-display_name: "创建Buddy应用"
-display_name_en: "Create Buddy App"
+display_name: "应用创建与上架"
+display_name_en: "App Building & Publishing"
 examples_zh:
   - "帮我创建一个任务派工台 Buddy 应用"
   - "把这个 MCP 发布到开放平台的连接器市场"
@@ -13,7 +13,7 @@ examples_en:
   - "Create a task dispatch board Buddy app for me"
   - "Publish this MCP to the connector marketplace"
   - "What fields do I need to prepare for a skill release"
-version: 1.0.2
+version: 1.0.3
 author: "pollanyan"
 agent_created: true
 ---
